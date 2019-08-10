@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77478d2e7eb7f4647a2a753481163c14, type: 3}
   m_Name: ObjectGridSettings
   m_EditorClassIdentifier: 
-  steps: 1
+  steps: 0.1
