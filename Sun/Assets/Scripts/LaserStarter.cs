@@ -1,37 +1,63 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
-[RequireComponent(typeof(LineRenderer))]
-public class LaserStarter : MonoBehaviour
+public class LaserStarter : LaserObject
 {
-    [SerializeField]
-    private Transform exitPoint;
+    public Laser[] lasers;
 
-    private Laser laser;
-    private LineRenderer laserRepresentation;
-    private RaycastHit hit;
+    //// Start is called before the first frame update
+    //void Start()
+    //{
+    //    laserRepresentation = GetComponent<LineRenderer>();
+    //}
 
-    // Start is called before the first frame update
-    void Start()
+    //// Update is called once per frame
+    //void Update()
+    //{
+    //    laserRepresentation.SetPosition(0, exitPoint.localPosition);
+
+    //    if (Physics.Raycast(exitPoint.position, exitPoint.forward, out hit))
+    //    {
+    //        laserRepresentation.SetPosition(1, hit.point - exitPoint.position);
+    //    }
+    //    else
+    //    {
+    //        laserRepresentation.SetPosition(1, exitPoint.forward * 10);
+    //    }
+    //}
+}
+
+[CustomEditor(typeof(LaserStarter))]
+[CanEditMultipleObjects]
+public class LaserStartInspector : Editor
+{
+    private Laser[] prevLasers;
+
+    public override void OnInspectorGUI()
     {
-        laserRepresentation = GetComponent<LineRenderer>();
-    }
+        serializedObject.Update();
 
-    // Update is called once per frame
-    void Update()
-    {
-        Debug.DrawRay(exitPoint.position, exitPoint.forward, Color.blue);
+        LaserStarter laserStarter = (LaserStarter)target;
 
-        laserRepresentation.SetPosition(0, exitPoint.localPosition);
-
-        if (Physics.Raycast(exitPoint.position, exitPoint.forward, out hit))
+        if (prevLasers != null)
         {
-            laserRepresentation.SetPosition(1, hit.point - exitPoint.position);
+            int exitPoints = laserStarter.gameObject.transform.childCount;
+            laserStarter.lasers = new Laser[exitPoints];
+
+            for (int i = 0; i < exitPoints && i < prevLasers.Length; i++)
+            {
+                laserStarter.lasers[i] = new Laser(prevLasers[i]);
+            }
         }
-        else
-        {
-            laserRepresentation.SetPosition(1, exitPoint.forward * 10);
-        }
+
+        prevLasers = (Laser[])laserStarter.lasers.Clone();
+
+        SerializedProperty lasers = serializedObject.FindProperty("lasers");
+        EditorGUILayout.PropertyField(lasers, true);
+
+        serializedObject.ApplyModifiedProperties();
+        //EditorUtility.SetDirty(laserStarter);
     }
 }

@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Laser : MonoBehaviour
+[System.Serializable]
+public class Laser
 {
-    private bool r, g, b;
-    private int power;
+    [SerializeField]
+    private bool r = true, g = true, b = true;
+
+    [SerializeField, Min(0)]
+    private int power = 1;
 
     public Laser(bool red, bool green, bool blue, int power)
     {
