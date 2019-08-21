@@ -13,11 +13,11 @@ public class ObjectGrid : MonoBehaviour
     {
         if (!Application.isPlaying)
         {
-            float x = Mathf.Round(transform.position.x / settings.Steps) * settings.Steps;
-            float y = Mathf.Round(transform.position.y / settings.Steps) * settings.Steps;
-            float z = Mathf.Round(transform.position.z / settings.Steps) * settings.Steps;
+            float x = Mathf.Round(transform.localPosition.x / settings.Steps) * settings.Steps;
+            float y = Mathf.Round(transform.localPosition.y / settings.Steps) * settings.Steps;
+            float z = Mathf.Round(transform.localPosition.z / settings.Steps) * settings.Steps;
 
-            transform.position = new Vector3(x, y, z);
+            transform.localPosition = new Vector3(x, y, z);
         }
     }
 #endif
