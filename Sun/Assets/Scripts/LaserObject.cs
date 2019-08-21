@@ -2,23 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(LineRenderer))]
-public class LaserObject : MonoBehaviour
+abstract public class LaserObject : MonoBehaviour
 {
     [SerializeField]
-    protected Transform[] exitPoints;
+    protected int powerRequirement;
 
     [SerializeField]
-    protected Transform[] entryPoints;
+    protected bool requireRed, requireGreen, requireBlue;
 
-    //protected List<Laser> lasers;
-    //protected List<LineRenderer> laserRepresentations;
-    //protected List<RaycastHit> hits;
-    protected LineRenderer[] laserRepresentations;
-    protected RaycastHit[] hits;
+    protected int power = 0;
 
-    protected void SetupLasers()
+    protected List<LineRenderer> laserRepresentations = new List<LineRenderer>();
+
+    private void Start()
     {
+        foreach (Transform child in transform)
+        {
+            if (child.CompareTag("ExitPoint"))
+            {
+                var lr = child.GetComponent<LineRenderer>();
+                lr.SetPosition(0, child.position);
 
+                laserRepresentations.Add(lr);
+            }
+        }
     }
+
+    abstract protected void SetLineRenderers();
 }

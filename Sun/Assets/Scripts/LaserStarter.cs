@@ -7,57 +7,29 @@ public class LaserStarter : LaserObject
 {
     public Laser[] lasers;
 
-    //// Start is called before the first frame update
-    //void Start()
-    //{
-    //    laserRepresentation = GetComponent<LineRenderer>();
-    //}
-
-    //// Update is called once per frame
-    //void Update()
-    //{
-    //    laserRepresentation.SetPosition(0, exitPoint.localPosition);
-
-    //    if (Physics.Raycast(exitPoint.position, exitPoint.forward, out hit))
-    //    {
-    //        laserRepresentation.SetPosition(1, hit.point - exitPoint.position);
-    //    }
-    //    else
-    //    {
-    //        laserRepresentation.SetPosition(1, exitPoint.forward * 10);
-    //    }
-    //}
-}
-
-[CustomEditor(typeof(LaserStarter))]
-[CanEditMultipleObjects]
-public class LaserStartInspector : Editor
-{
-    private Laser[] prevLasers;
-
-    public override void OnInspectorGUI()
+    private void Update()
     {
-        serializedObject.Update();
+        SetLineRenderers();
+    }
 
-        LaserStarter laserStarter = (LaserStarter)target;
+    protected override void SetLineRenderers()
+    {
 
-        if (prevLasers != null)
+        for (int i = 0; i < laserRepresentations.Count; i++)
         {
-            int exitPoints = laserStarter.gameObject.transform.childCount;
-            laserStarter.lasers = new Laser[exitPoints];
+            LineRenderer lr = laserRepresentations[i];
+            GameObject go = lr.gameObject;
+            RaycastHit hit;
 
-            for (int i = 0; i < exitPoints && i < prevLasers.Length; i++)
+            float maxDistance = 500f;
+
+            if (Physics.Raycast(go.transform.position, go.transform.forward, out hit, maxDistance))
             {
-                laserStarter.lasers[i] = new Laser(prevLasers[i]);
+                maxDistance = hit.distance;
             }
+
+            lr.SetPosition(0, go.transform.position);
+            lr.SetPosition(1, go.transform.position + go.transform.forward * maxDistance);
         }
-
-        prevLasers = (Laser[])laserStarter.lasers.Clone();
-
-        SerializedProperty lasers = serializedObject.FindProperty("lasers");
-        EditorGUILayout.PropertyField(lasers, true);
-
-        serializedObject.ApplyModifiedProperties();
-        //EditorUtility.SetDirty(laserStarter);
     }
 }
