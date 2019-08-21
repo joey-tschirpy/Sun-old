@@ -5,8 +5,6 @@ using UnityEditor;
 
 public class LaserStarter : LaserObject
 {
-    public Laser[] lasers;
-
     private void Update()
     {
         SetLineRenderers();
@@ -19,6 +17,7 @@ public class LaserStarter : LaserObject
         {
             LineRenderer lr = laserRepresentations[i];
             GameObject go = lr.gameObject;
+            Material mat = go.GetComponent<Renderer>().material;
             RaycastHit hit;
 
             float maxDistance = 500f;

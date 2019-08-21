@@ -5,6 +5,9 @@ using UnityEngine;
 abstract public class LaserObject : MonoBehaviour
 {
     [SerializeField]
+    public Laser[] lasers;
+
+    [SerializeField]
     protected int powerRequirement;
 
     [SerializeField]
@@ -16,12 +19,16 @@ abstract public class LaserObject : MonoBehaviour
 
     private void Start()
     {
-        foreach (Transform child in transform)
+        for (int i = 0; i < transform.childCount; i++)
         {
+            Transform child = transform.GetChild(i);
+
             if (child.CompareTag("ExitPoint"))
             {
                 var lr = child.GetComponent<LineRenderer>();
                 lr.SetPosition(0, child.position);
+
+                lr.material.color = lasers[i].Color;
 
                 laserRepresentations.Add(lr);
             }

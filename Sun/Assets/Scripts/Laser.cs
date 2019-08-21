@@ -11,6 +11,11 @@ public class Laser
     [SerializeField, Min(0)]
     private int power = 1;
 
+    public bool R => r;
+    public bool G => g;
+    public bool B => b;
+    public int Power => power;
+
     public Laser(bool red, bool green, bool blue, int power)
     {
         r = red;
