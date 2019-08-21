@@ -21,8 +21,7 @@ public class LaserStarter : LaserObject
             RaycastHit hit;
 
             float maxDistance = 500f;
-
-            if (Physics.Raycast(go.transform.position, go.transform.forward, out hit, maxDistance))
+            if (Physics.SphereCast(go.transform.position, lr.startWidth, go.transform.forward, out hit, maxDistance))
             {
                 maxDistance = hit.distance;
             }
